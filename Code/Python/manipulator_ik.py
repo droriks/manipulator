@@ -9,7 +9,7 @@ def main():
 def find_alphas():
     # --- Set Parameters ---
     h = 110 #height
-    psi = 0 #z
+    psi = 10 #z
     theta = 0 #x
 
     #change to radians
@@ -227,4 +227,5 @@ def find_alphas():
     return alpha1deg, alpha2deg, alpha3deg
     
 
-main()
+if __name__ == "__main__":
+    main()
