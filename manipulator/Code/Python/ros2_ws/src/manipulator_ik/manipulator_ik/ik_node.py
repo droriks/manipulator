@@ -30,11 +30,12 @@ class IKNode(Node):
 
     def solve_ik(self, h, psi, theta):
         # --- Constants ---
-        Rp = 70.6
-        Rb = 42.114
-        L1 = 51
-        L2 = 72.43
-        del_h = 26.66   
+        Rp = 56.17
+        Rb = 14.78
+        Zb = 40.50
+        L1 = 36
+        L2 = 42.4
+        del_h = 26.81   
 
         psi = psi*np.pi/180
         theta = theta*np.pi/180
@@ -44,30 +45,30 @@ class IKNode(Node):
 
         # --- Basic Transformations and Arm 1 ---
         TOA1 = Matrix([
-            [cos(alpha1), -sin(alpha1), 0, Rb],
-            [sin(alpha1), cos(alpha1), 0, 0],
-            [0, 0, 1, 0],
+            [cos(-(alpha1)), 0, sin(-(alpha1)), Rb],
+            [0, 1, 0, 0],
+            [-sin(-(alpha1)), 0, cos(-(alpha1)), Zb],
             [0, 0, 0, 1]
         ])
 
         TAB1 = Matrix([
-            [cos(pi-beta1), -sin(pi-beta1), 0, L1],
-            [sin(pi-beta1), cos(pi-beta1), 0, 0],
-            [0, 0, 1, 0],
+            [cos(-(pi-beta1)), 0, sin(-(pi-beta1)), L1],
+            [0, 1, 0, 0],
+            [-sin(-(pi-beta1)), 0, cos(-(pi-beta1)), 0],
             [0, 0, 0, 1]
         ])
 
         TBC1 = Matrix([
-            [cos(-(pi-beta1+alpha1)), -sin(-(pi-beta1+alpha1)), 0, L2],
-            [sin(-(pi-beta1+alpha1)), cos(-(pi-beta1+alpha1)), 0, 0],
-            [0, 0, 1, 0],
+            [cos(pi-beta1+alpha1), 0, sin(pi-beta1+alpha1), L2],
+            [0, 1, 0, 0],
+            [-sin(pi-beta1+alpha1), 0, cos(pi-beta1+alpha1), 0],
             [0, 0, 0, 1]
         ])
 
         TCball = Matrix([
             [1, 0, 0, 0],
-            [0, 1, 0, del_h],
-            [0, 0, 1, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, del_h],
             [0, 0, 0, 1]
         ])
 
@@ -77,13 +78,13 @@ class IKNode(Node):
             [0, sin(theta), cos(theta)]
         ])
 
-        Rzp = Matrix([
-            [cos(psi), -sin(psi), 0],
-            [sin(psi), cos(psi), 0],
-            [0, 0, 1]
+        Ryp = Matrix([
+            [cos(psi), 0, sin(psi)],
+            [0, 1, 0],
+            [-sin(psi), 0, cos(psi)],
         ])
 
-        R = Rzp*Rxt
+        R = Ryp*Rxt
 
         TCC = Matrix([
             [R[0,0], R[0,1], R[0,2], 0],
@@ -104,45 +105,45 @@ class IKNode(Node):
         # --- Arm 2 ---
 
         TOO2 = Matrix([
-            [cos(2*pi/3), 0, sin(2*pi/3), 0],
-            [0, 1, 0, 0],
-            [-sin(2*pi/3), 0, cos(2*pi/3), 0],
+            [cos(2*pi/3), -sin(2*pi/3), 0, 0],
+            [sin(2*pi/3), cos(2*pi/3), 0, 0],
+            [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
 
         TOA2 = Matrix([
-            [cos(alpha2), -sin(alpha2), 0, Rb],
-            [sin(alpha2), cos(alpha2), 0, 0],
-            [0, 0, 1, 0],
+            [cos(-(alpha2)), 0, sin(-(alpha2)), Rb],
+            [0, 1, 0, 0],
+            [-sin(-(alpha2)), 0, cos(-(alpha2)), Zb],
             [0, 0, 0, 1]
         ])
 
         TAB2 = Matrix([
-            [cos(pi-beta2), -sin(pi-beta2), 0, L1],
-            [sin(pi-beta2), cos(pi-beta2), 0, 0],
-            [0, 0, 1, 0],
+            [cos(-(pi-beta2)), 0, sin(-(pi-beta2)), L1],
+            [0, 1, 0, 0],
+            [-sin(-(pi-beta2)), 0, cos(-(pi-beta2)), 0],
             [0, 0, 0, 1]
         ])
 
         TBC2 = Matrix([
-            [cos(-(pi-beta2+alpha2)), -sin(-(pi-beta2+alpha2)), 0, L2],
-            [sin(-(pi-beta2+alpha2)), cos(-(pi-beta2+alpha2)), 0, 0],
-            [0, 0, 1, 0],
+            [cos(pi-beta2+alpha2), 0, sin(pi-beta2+alpha2), L2],
+            [0, 1, 0, 0],
+            [-sin(pi-beta2+alpha2), 0, cos(pi-beta2+alpha2), 0],
             [0, 0, 0, 1]
         ])
 
         TCC2 = Matrix([
-            [cos(-2*pi/3), 0, sin(-2*pi/3), 0],
-            [0, 1, 0, 0],
-            [-sin(-2*pi/3), 0, cos(-2*pi/3), 0],
+            [cos(-2*pi/3), -sin(-2*pi/3), 0, 0],
+            [sin(-2*pi/3), cos(-2*pi/3), 0, 0],
+            [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
 
 
         TCD2 = Matrix([
             [1, 0, 0, Rp*cos(pi/3)],
-            [0, 1, 0, 0],
-            [0, 0, 1, Rp*sin(pi/3)],
+            [0, 1, 0, -Rp*sin(pi/3)],
+            [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
 
@@ -150,44 +151,45 @@ class IKNode(Node):
 
         # --- Arm 3 ---
         TOO3 = Matrix([
-            [cos(-2*pi/3), 0, sin(-2*pi/3), 0],
-            [0, 1, 0, 0],
-            [-sin(-2*pi/3), 0, cos(-2*pi/3), 0],
+            [cos(-2*pi/3), -sin(-2*pi/3), 0, 0],
+            [sin(-2*pi/3), cos(-2*pi/3), 0, 0],
+            [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
 
         TOA3 = Matrix([
-            [cos(alpha3), -sin(alpha3), 0, Rb],
-            [sin(alpha3), cos(alpha3), 0, 0],
-            [0, 0, 1, 0],
+            [cos(-(alpha3)), 0, sin(-(alpha3)), Rb],
+            [0, 1, 0, 0],
+            [-sin(-(alpha3)), 0, cos(-(alpha3)), Zb],
             [0, 0, 0, 1]
         ])
 
         TAB3 = Matrix([
-            [cos(pi-beta3), -sin(pi-beta3), 0, L1],
-            [sin(pi-beta3), cos(pi-beta3), 0, 0],
-            [0, 0, 1, 0],
+            [cos(-(pi-beta3)), 0, sin(-(pi-beta3)), L1],
+            [0, 1, 0, 0],
+            [-sin(-(pi-beta3)), 0, cos(-(pi-beta3)), 0],
             [0, 0, 0, 1]
         ])
 
         TBC3 = Matrix([
-            [cos(-(pi-beta3+alpha3)), -sin(-(pi-beta3+alpha3)), 0, L2],
-            [ sin(-(pi-beta3+alpha3)), cos(-(pi-beta3+alpha3)), 0, 0],
-            [0, 0, 1, 0],
+            [cos(pi-beta3+alpha3), 0, sin(pi-beta3+alpha3), L2],
+            [0, 1, 0, 0],
+            [-sin(pi-beta3+alpha3), 0, cos(pi-beta3+alpha3), 0],
             [0, 0, 0, 1]
         ])
 
         TCC3 = Matrix([
-            [cos(2*pi/3), 0, sin(2*pi/3), 0],
-            [0, 1, 0, 0],
-            [-sin(2*pi/3), 0, cos(2*pi/3), 0],
+            [cos(2*pi/3), -sin(2*pi/3), 0, 0],
+            [sin(2*pi/3), cos(2*pi/3), 0, 0],
+            [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
 
+
         TCD3 = Matrix([
             [1, 0, 0, Rp*cos(pi/3)],
-            [0, 1, 0, 0],
-            [0, 0, 1, -Rp*sin(pi/3)],
+            [0, 1, 0, Rp*sin(pi/3)],
+            [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
 
@@ -198,13 +200,13 @@ class IKNode(Node):
         # Arm 1
         #extract eqns
         F11 = T1[0,3]
-        F12 = T1[1,3] - h
+        F12 = T1[2,3] - h
 
         #numsolve
         solution1 = nsolve(
             [F11, F12],
             [alpha1, beta1],
-            [0.5, 1]
+            [0.3, 1.8]
         )
 
         alpha1deg = float(solution1[0]*180/np.pi)
@@ -213,13 +215,13 @@ class IKNode(Node):
         # Arm 2
         #extract eqns
         F21 = T2[0,3]
-        F22 = T2[1,3] - h
+        F22 = T2[2,3] - h
 
         #numsolve
         solution2 = nsolve(
             [F21, F22],
             [alpha2, beta2],
-            [0.5, 1]
+            [0.3, 1.8]
         )
 
         alpha2deg = float(solution2[0]*180/np.pi)
@@ -228,13 +230,13 @@ class IKNode(Node):
         # Arm 3
         #extract eqns
         F31 = T3[0,3]
-        F32 = T3[1,3] - h
+        F32 = T3[2,3] - h
 
         #numsolve
         solution3 = nsolve(
             [F31, F32],
             [alpha3, beta3],
-            [0.5, 1]
+            [0.3, 1.8]
         )
 
         alpha3deg = float(solution3[0]*180/np.pi)
