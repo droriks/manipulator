@@ -1,0 +1,7 @@
+bool start
+---
+bool success
+string message
+---
+int32 legs_homed
+string current_leg
