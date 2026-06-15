@@ -8,7 +8,7 @@ class HomingNode(Node):
         super().__init__('homing_node')
 
         #parameters and pins
-        self.declare_parameter('homing_speed', 2.0)
+        self.declare_parameter('homing_speed', .5)
         self.declare_parameter('switch_pin_1', 17)
         self.declare_parameter('switch_pin_2', 27)
         self.declare_parameter('switch_pin_3', 22)
@@ -19,7 +19,7 @@ class HomingNode(Node):
         pin3 = self.get_parameter('switch_pin_3').value
 
         #publishers
-        self.joint_pub = self.create_publisher(JointAngles, 'joint_angles', 10)
+        self.joint_pub = self.create_publisher(JointAngles, 'homing_angles', 10)
         self.status_pub = self.create_publisher(HomingStatus, 'homing_status', 10)
 
         #limit switches
@@ -81,7 +81,7 @@ class HomingNode(Node):
                 self.angle3 += self.homing_speed
 
             #they got there
-            if self.angle1 > 0 and self.angle2 > 0 and self.angle3>0:
+            if self.angle1 >= 0 and self.angle2 >= 0 and self.angle3 >= 0:
                 self.angle1 = 0.0
                 self.angle2 = 0.0
                 self.angle3 = 0.0
