@@ -99,10 +99,13 @@ class HomingNode(Node):
             # This slowly moves each servo in the negative direction
             if not self.homed1:
                 self.angle1 -= self.homing_speed
+                self.get_logger().info(f"angle1: {self.angle1}")
             if not self.homed2:
                 self.angle2 -= self.homing_speed
+                self.get_logger().info(f"angle2: {self.angle2}")
             if not self.homed3:
                 self.angle3 -= self.homing_speed
+                self.get_logger().info(f"angle3: {self.angle3}")
 
             # Command the servos to the new angles
             self._command_servos()
