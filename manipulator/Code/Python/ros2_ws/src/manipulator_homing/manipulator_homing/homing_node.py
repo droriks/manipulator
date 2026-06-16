@@ -180,7 +180,7 @@ class HomingNode(Node):
         angle = max(-50.0, min(130.0, angle))
         # Map angle to pulse width in microseconds
         # -30° → min_pulse (500us), +150° → max_pulse (2500us)
-        pulse_us = self.max_pulse - (angle + 30) / 180 * (self.max_pulse - self.min_pulse)
+        pulse_us = self.max_pulse - (angle + 60) / 180 * (self.max_pulse - self.min_pulse)
         # Convert microseconds to 16-bit duty cycle (period = 20000us)
         duty_cycle = int(pulse_us / 20000 * 65535)
         self.pca.channels[channel].duty_cycle = duty_cycle
