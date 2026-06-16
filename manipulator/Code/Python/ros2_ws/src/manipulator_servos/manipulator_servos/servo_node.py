@@ -57,14 +57,14 @@ class ServoNode(Node):
 
     def joint_callback(self, msg):
         if self.homed:
-            self.set_servo_angle(0, msg.alpha1)
-            self.set_servo_angle(3, msg.alpha2)
-            self.set_servo_angle(7, msg.alpha3)
+            self.set_servo_angle(channels[0], msg.alpha1)
+            self.set_servo_angle(channels[1], msg.alpha2)
+            self.set_servo_angle(channels[2], msg.alpha3)
         else:
             self.get_logger().info('Not homed yet, ignoring IK command')
 
     def set_servo_angle(self, channel, angle):
-        angle = max(-30, min(150.0, angle))
+        #angle = max(-30, min(150.0, angle))
         pulse_us = self.max_pulse - (angle + 30)/180 * (self.max_pulse - self.min_pulse)
         duty_cycle = int(pulse_us/20000*65535)
         self.pca.channels[channel].duty_cycle = duty_cycle

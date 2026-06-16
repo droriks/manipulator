@@ -8,7 +8,7 @@ class HomingNode(Node):
         super().__init__('homing_node')
 
         #parameters and pins
-        self.declare_parameter('homing_speed', .5)
+        self.declare_parameter('homing_speed', .1)
         self.declare_parameter('switch_pin_1', 17)
         self.declare_parameter('switch_pin_2', 27)
         self.declare_parameter('switch_pin_3', 22)
@@ -75,6 +75,7 @@ class HomingNode(Node):
         else: #meaning, its returning
             if self.angle1 < 0.0:
                 self.angle1 += self.homing_speed
+                self.get_logger().info("trying to return leg1")
             if self.angle2 < 0.0:
                 self.angle2 += self.homing_speed
             if self.angle3 < 0.0:
