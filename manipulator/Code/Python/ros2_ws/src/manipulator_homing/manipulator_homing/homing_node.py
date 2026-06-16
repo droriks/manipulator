@@ -53,9 +53,9 @@ class HomingNode(Node):
 
         # --- Offsets: difference between where switch fired and -30.0 ---
         # These get published so the servo node can apply them to IK commands
-        self.angle1_offset = 0.0
-        self.angle2_offset = 0.0
-        self.angle3_offset = 0.0
+        self.angle1_offset = -20.0
+        self.angle2_offset = -20.0
+        self.angle3_offset = -20.0
 
         # --- Phase flags ---
         self.returning = False       # True once all switches hit, returning to 0
