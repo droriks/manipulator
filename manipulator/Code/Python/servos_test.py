@@ -31,7 +31,16 @@ try:
         set_angle(channel, angle)
         sleep(0.05)
 
-    print(f"Switch hit at {angle:.1f} degrees")
+    print(f"Switch hit at {angle:.1f} degrees — returning 30 degrees up")
+    
+    target = angle + 30.0
+    while angle < target:
+        angle += 0.5
+        print(f"Returning: {angle:.1f}")
+        set_angle(channel, angle)
+        sleep(0.05)
+
+    print(f"Done — stopped at {angle:.1f} degrees")
 
 except KeyboardInterrupt:
     print("Stopped")
