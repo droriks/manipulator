@@ -27,10 +27,10 @@ class HomingNode(Node):
         self.switch2 = Button(pin2, pull_up=True)
         self.switch3 = Button(pin3, pull_up=True)
 
-        # states
-        self.angle1 = 0.0
-        self.angle2 = 0.0
-        self.angle3 = 0.0
+        # states — start at -30.0 (assumed home position) to avoid upward jump on first command
+        self.angle1 = -30.0
+        self.angle2 = -30.0
+        self.angle3 = -30.0
         self.homed1 = False
         self.homed2 = False
         self.homed3 = False
@@ -40,22 +40,16 @@ class HomingNode(Node):
         self.returning = False
         self.homing_complete = False
 
-        # pre-check switches before timer starts
+        # pre-check: mark any switch already pressed as homed
         if self.switch1.is_pressed:
             self.homed1 = True
-            self.angle1 = -30.0
-            self.angle1_offset = 0.0
-            self.get_logger().warn('Switch 1 already pressed at startup — leg 1 will return from home')
+            self.get_logger().warn('Switch 1 already pressed at startup')
         if self.switch2.is_pressed:
             self.homed2 = True
-            self.angle2 = -30.0
-            self.angle2_offset = 0.0
-            self.get_logger().warn('Switch 2 already pressed at startup — leg 2 will return from home')
+            self.get_logger().warn('Switch 2 already pressed at startup')
         if self.switch3.is_pressed:
             self.homed3 = True
-            self.angle3 = -30.0
-            self.angle3_offset = 0.0
-            self.get_logger().warn('Switch 3 already pressed at startup — leg 3 will return from home')
+            self.get_logger().warn('Switch 3 already pressed at startup')
 
         #timer
         self.timer = self.create_timer(.05, self.homing_step)
