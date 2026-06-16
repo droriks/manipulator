@@ -8,7 +8,7 @@ class HomingNode(Node):
         super().__init__('homing_node')
 
         #parameters and pins
-        self.declare_parameter('homing_speed', .1)
+        self.declare_parameter('homing_speed', .3)
         self.declare_parameter('switch_pin_1', 17)
         self.declare_parameter('switch_pin_2', 27)
         self.declare_parameter('switch_pin_3', 22)
