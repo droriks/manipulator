@@ -19,7 +19,7 @@ class ServoNode(Node):
 
         #PWM range
         self.min_pulse = 500
-        self.max_pulse = 2500
+        self.max_pulse = 2700
 
         #state 
         self.homed = False

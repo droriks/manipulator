@@ -27,10 +27,10 @@ class HomingNode(Node):
         self.switch2 = Button(pin2, pull_up=True)
         self.switch3 = Button(pin3, pull_up=True)
 
-        # states — start at -30.0 (assumed home position) to avoid upward jump on first command
-        self.angle1 = -30.0
-        self.angle2 = -30.0
-        self.angle3 = -30.0
+        # states
+        self.angle1 = 0.0
+        self.angle2 = 0.0
+        self.angle3 = 0.0
         self.homed1 = False
         self.homed2 = False
         self.homed3 = False
@@ -40,16 +40,20 @@ class HomingNode(Node):
         self.returning = False
         self.homing_complete = False
 
-        # pre-check: mark any switch already pressed as homed
+        # pre-check: if a switch is already pressed the servo is physically at -30°,
+        # so initialize that leg's angle to -30° to avoid commanding a jump away from home
         if self.switch1.is_pressed:
             self.homed1 = True
-            self.get_logger().warn('Switch 1 already pressed at startup')
+            self.angle1 = -30.0
+            self.get_logger().warn('Switch 1 already pressed at startup — leg 1 will return from home')
         if self.switch2.is_pressed:
             self.homed2 = True
-            self.get_logger().warn('Switch 2 already pressed at startup')
+            self.angle2 = -30.0
+            self.get_logger().warn('Switch 2 already pressed at startup — leg 2 will return from home')
         if self.switch3.is_pressed:
             self.homed3 = True
-            self.get_logger().warn('Switch 3 already pressed at startup')
+            self.angle3 = -30.0
+            self.get_logger().warn('Switch 3 already pressed at startup — leg 3 will return from home')
 
         #timer
         self.timer = self.create_timer(.05, self.homing_step)
