@@ -180,7 +180,7 @@ class HomingNode(Node):
     def set_servo_angle(self, channel, angle):
         """Convert angle in degrees to PWM and send to servo."""
         # Clamp to safe range during homing
-        angle = max(-50.0, min(130.0, angle))
+        angle = max(-100.0, min(130.0, angle))
         # Map angle to pulse width in microseconds
         # -30° → min_pulse (500us), +150° → max_pulse (2500us)
         pulse_us = self.max_pulse - (angle + 60) / 180 * (self.max_pulse - self.min_pulse)
