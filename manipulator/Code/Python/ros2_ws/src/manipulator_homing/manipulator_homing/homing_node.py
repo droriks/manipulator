@@ -42,9 +42,9 @@ class HomingNode(Node):
         # --- Angle state: where we THINK each servo is ---
         # We start assuming servos are near home (-30) to avoid
         # commanding a large jump on the first tick
-        self.angle1 = -20.0
-        self.angle2 = -20.0
-        self.angle3 = -20.0
+        self.angle1 = 0.0
+        self.angle2 = 0.0
+        self.angle3 = 0.0
 
         # --- Homing state flags ---    
         self.homed1 = False
@@ -53,9 +53,9 @@ class HomingNode(Node):
 
         # --- Offsets: difference between where switch fired and -30.0 ---
         # These get published so the servo node can apply them to IK commands
-        self.angle1_offset = -20.0
-        self.angle2_offset = -20.0
-        self.angle3_offset = -20.0
+        #self.angle1_offset = -20.0
+        #self.angle2_offset = -20.0
+        #self.angle3_offset = -20.0
 
         # --- Phase flags ---
         self.returning = False       # True once all switches hit, returning to 0
@@ -112,17 +112,17 @@ class HomingNode(Node):
             # We do NOT snap the angle to -30 — we just stop and remember the offset
             if not self.homed1 and self.switch1.is_pressed:
                 self.homed1 = True
-                self.angle1_offset = self.angle1 - (-30.0)
+                #self.angle1_offset = self.angle1 - (-30.0)
                 self.get_logger().info(f'Leg 1 homed at {self.angle1:.1f}° (offset={self.angle1_offset:.1f})')
 
             if not self.homed2 and self.switch2.is_pressed:
                 self.homed2 = True
-                self.angle2_offset = self.angle2 - (-30.0)
+                #self.angle2_offset = self.angle2 - (-30.0)
                 self.get_logger().info(f'Leg 2 homed at {self.angle2:.1f}° (offset={self.angle2_offset:.1f})')
 
             if not self.homed3 and self.switch3.is_pressed:
                 self.homed3 = True
-                self.angle3_offset = self.angle3 - (-30.0)
+                #self.angle3_offset = self.angle3 - (-30.0)
                 self.get_logger().info(f'Leg 3 homed at {self.angle3:.1f}° (offset={self.angle3_offset:.1f})')
 
             # Once all three are homed, start returning to 0
@@ -156,16 +156,16 @@ class HomingNode(Node):
                 # Publish homing complete status with offsets for the servo node
                 status = HomingStatus()
                 status.homed = True
-                status.offset1 = self.angle1_offset
-                status.offset2 = self.angle2_offset
-                status.offset3 = self.angle3_offset
+                #status.offset1 = self.angle1_offset
+                #status.offset2 = self.angle2_offset
+                #status.offset3 = self.angle3_offset
                 self.status_pub.publish(status)
 
                 self.get_logger().info(
                     f'Homing complete. Offsets: '
-                    f'leg1={self.angle1_offset:.1f} '
-                    f'leg2={self.angle2_offset:.1f} '
-                    f'leg3={self.angle3_offset:.1f}'
+                    #f'leg1={self.angle1_offset:.1f} '
+                    #f'leg2={self.angle2_offset:.1f} '
+                    #f'leg3={self.angle3_offset:.1f}'
                 )
 
     def _command_servos(self):
