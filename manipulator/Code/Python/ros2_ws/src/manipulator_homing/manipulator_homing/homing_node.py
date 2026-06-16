@@ -27,15 +27,35 @@ class HomingNode(Node):
         self.switch2 = Button(pin2, pull_up=True)
         self.switch3 = Button(pin3, pull_up=True)
 
-        #states
+        # states
         self.angle1 = 0.0
         self.angle2 = 0.0
         self.angle3 = 0.0
         self.homed1 = False
         self.homed2 = False
         self.homed3 = False
+        self.angle1_offset = 0.0
+        self.angle2_offset = 0.0
+        self.angle3_offset = 0.0
         self.returning = False
         self.homing_complete = False
+
+        # pre-check switches before timer starts
+        if self.switch1.is_pressed:
+            self.homed1 = True
+            self.angle1 = 0.0
+            self.angle1_offset = 0.0
+            self.get_logger().warn('Switch 1 already pressed at startup — leg 1 skipped')
+        if self.switch2.is_pressed:
+            self.homed2 = True
+            self.angle2 = 0.0
+            self.angle2_offset = 0.0
+            self.get_logger().warn('Switch 2 already pressed at startup — leg 2 skipped')
+        if self.switch3.is_pressed:
+            self.homed3 = True
+            self.angle3 = 0.0
+            self.angle3_offset = 0.0
+            self.get_logger().warn('Switch 3 already pressed at startup — leg 3 skipped')
 
         #timer
         self.timer = self.create_timer(.05, self.homing_step)
@@ -57,16 +77,18 @@ class HomingNode(Node):
             #check limit switches
             if not self.homed1 and self.switch1.is_pressed:
                 self.homed1 = True
-                self.angle1 = -30.0
-                self.get_logger().info('Leg 1 Homed')
+                self.angle1_offset = self.angle1 - (-30.0)
+                self.get_logger().info(f'Leg 1 homed at {self.angle1:.1f}')
+
             if not self.homed2 and self.switch2.is_pressed:
                 self.homed2 = True
-                self.angle2 = -30.0
-                self.get_logger().info('Leg 2 Homed')
+                self.angle2_offset = self.angle2 - (-30.0)
+                self.get_logger().info(f'Leg 2 homed at {self.angle2:.1f}')
+
             if not self.homed3 and self.switch3.is_pressed:
                 self.homed3 = True
-                self.angle3 = -30.0
-                self.get_logger().info('Leg 3 Homed')
+                self.angle3_offset = self.angle3 - (-30.0)
+                self.get_logger().info(f'Leg 3 homed at {self.angle3:.1f}')
 
             if self.homed1 and self.homed2 and self.homed3:
                 self.returning = True
@@ -96,6 +118,9 @@ class HomingNode(Node):
         msg.alpha1 = self.angle1
         msg.alpha2 = self.angle2
         msg.alpha3 = self.angle3
+        msg.offset1 = self.angle1_offset
+        msg.offset2 = self.angle2_offset
+        msg.offset3 = self.angle3_offset
         self.joint_pub.publish(msg)
 
 def main(args=None):

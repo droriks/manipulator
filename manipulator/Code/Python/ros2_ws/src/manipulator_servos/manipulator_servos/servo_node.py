@@ -23,6 +23,7 @@ class ServoNode(Node):
 
         #state 
         self.homed = False
+        self.offsets = [0.0, 0.0, 0.0]
 
         #subscribers
         self.homing_angles = self.create_subscription(
@@ -46,9 +47,10 @@ class ServoNode(Node):
 
     def homing_angles_callback(self, msg):
         if not self.homed:
-            self.set_servo_angle(self.channels[0], msg.alpha1)
-            self.set_servo_angle(self.channels[1], msg.alpha2)
-            self.set_servo_angle(self.channels[2], msg.alpha3)
+            self.offsets = [msg.offset1, msg.offset2, msg.offset3]
+            self.set_servo_angle(self.channels[0], msg.alpha1 - msg.offset1)
+            self.set_servo_angle(self.channels[1], msg.alpha2 - msg.offset2)
+            self.set_servo_angle(self.channels[2], msg.alpha3 - msg.offset3)
 
     def homing_status_callback(self, msg):
         self.homed = msg.homed
@@ -57,15 +59,15 @@ class ServoNode(Node):
 
     def joint_callback(self, msg):
         if self.homed:
-            self.set_servo_angle(self.channels[0], msg.alpha1)
-            self.set_servo_angle(self.channels[1], msg.alpha2)
-            self.set_servo_angle(self.channels[2], msg.alpha3)
+            self.set_servo_angle(self.channels[0], msg.alpha1 - self.offsets[0])
+            self.set_servo_angle(self.channels[1], msg.alpha2 - self.offsets[1])
+            self.set_servo_angle(self.channels[2], msg.alpha3 - self.offsets[2])
         else:
             self.get_logger().info('Not homed yet, ignoring IK command')
 
     def set_servo_angle(self, channel, angle):
-        #angle = max(-30, min(150.0, angle))
-        pulse_us = self.min_pulse + (angle + 30)/180 * (self.max_pulse - self.min_pulse)
+        angle = max(-30, min(150.0, angle))
+        pulse_us = self.max_pulse - (angle + 30)/180 * (self.max_pulse - self.min_pulse)
         duty_cycle = int(pulse_us/20000*65535)
         self.pca.channels[channel].duty_cycle = duty_cycle
 
