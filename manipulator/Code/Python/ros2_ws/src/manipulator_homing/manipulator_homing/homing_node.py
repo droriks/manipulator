@@ -43,19 +43,19 @@ class HomingNode(Node):
         # pre-check switches before timer starts
         if self.switch1.is_pressed:
             self.homed1 = True
-            self.angle1 = 0.0
+            self.angle1 = -30.0
             self.angle1_offset = 0.0
-            self.get_logger().warn('Switch 1 already pressed at startup — leg 1 skipped')
+            self.get_logger().warn('Switch 1 already pressed at startup — leg 1 will return from home')
         if self.switch2.is_pressed:
             self.homed2 = True
-            self.angle2 = 0.0
+            self.angle2 = -30.0
             self.angle2_offset = 0.0
-            self.get_logger().warn('Switch 2 already pressed at startup — leg 2 skipped')
+            self.get_logger().warn('Switch 2 already pressed at startup — leg 2 will return from home')
         if self.switch3.is_pressed:
             self.homed3 = True
-            self.angle3 = 0.0
+            self.angle3 = -30.0
             self.angle3_offset = 0.0
-            self.get_logger().warn('Switch 3 already pressed at startup — leg 3 skipped')
+            self.get_logger().warn('Switch 3 already pressed at startup — leg 3 will return from home')
 
         #timer
         self.timer = self.create_timer(.05, self.homing_step)
