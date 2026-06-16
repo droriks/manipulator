@@ -15,7 +15,7 @@ class ServoNode(Node):
         self.pca.frequency = 50
 
         #servo channels
-        self.channels = [0,3,7] #leg1,leg2,leg3
+        self.channels = [0,4,7] #leg1,leg2,leg3
 
         #PWM range
         self.min_pulse = 500
@@ -57,9 +57,9 @@ class ServoNode(Node):
 
     def joint_callback(self, msg):
         if self.homed:
-            self.set_servo_angle(channels[0], msg.alpha1)
-            self.set_servo_angle(channels[1], msg.alpha2)
-            self.set_servo_angle(channels[2], msg.alpha3)
+            self.set_servo_angle(self.channels[0], msg.alpha1)
+            self.set_servo_angle(self.channels[1], msg.alpha2)
+            self.set_servo_angle(self.channels[2], msg.alpha3)
         else:
             self.get_logger().info('Not homed yet, ignoring IK command')
 
