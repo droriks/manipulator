@@ -11,7 +11,7 @@ class HomingNode(Node):
         super().__init__('homing_node')
 
         # --- Parameters ---
-        self.declare_parameter('homing_speed', 0.1)
+        self.declare_parameter('homing_speed', 0.4)
         self.declare_parameter('switch_pin_1', 17)
         self.declare_parameter('switch_pin_2', 27)
         self.declare_parameter('switch_pin_3', 22)
@@ -42,9 +42,9 @@ class HomingNode(Node):
         # --- Angle state: where we THINK each servo is ---
         # We start assuming servos are near home (-30) to avoid
         # commanding a large jump on the first tick
-        self.angle1 = -25.0
-        self.angle2 = -25.0
-        self.angle3 = -25.0
+        self.angle1 = 0.0
+        self.angle2 = 0.0
+        self.angle3 = 0.0
 
         # --- Homing state flags ---
         self.homed1 = False
