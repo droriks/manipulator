@@ -68,7 +68,7 @@ class ServoNode(Node):
     def set_servo_angle(self, channel, angle):
         if self.homed:
             angle = max(-30, min(150.0, angle))
-        pulse_us = self.max_pulse - (angle + 30)/180 * (self.max_pulse - self.min_pulse)
+        pulse_us = self.max_pulse - (angle)/180 * (self.max_pulse - self.min_pulse)
         duty_cycle = int(pulse_us/20000*65535)
         self.pca.channels[channel].duty_cycle = duty_cycle
 
