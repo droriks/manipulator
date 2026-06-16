@@ -46,7 +46,7 @@ class HomingNode(Node):
         self.angle2 = 0.0
         self.angle3 = 0.0
 
-        # --- Homing state flags ---
+        # --- Homing state flags ---    
         self.homed1 = False
         self.homed2 = False
         self.homed3 = False
@@ -177,10 +177,10 @@ class HomingNode(Node):
     def set_servo_angle(self, channel, angle):
         """Convert angle in degrees to PWM and send to servo."""
         # Clamp to safe range during homing
-        angle = max(-35.0, min(150.0, angle))
+        angle = max(-50.0, min(130.0, angle))
         # Map angle to pulse width in microseconds
         # -30° → min_pulse (500us), +150° → max_pulse (2500us)
-        pulse_us = self.max_pulse - (angle + 30) / 180 * (self.max_pulse - self.min_pulse)
+        pulse_us = self.min_pulse + (angle + 30) / 180 * (self.max_pulse - self.min_pulse)
         # Convert microseconds to 16-bit duty cycle (period = 20000us)
         duty_cycle = int(pulse_us / 20000 * 65535)
         self.pca.channels[channel].duty_cycle = duty_cycle
