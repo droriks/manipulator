@@ -42,9 +42,9 @@ class HomingNode(Node):
         # --- Angle state: where we THINK each servo is ---
         # We start assuming servos are near home (-30) to avoid
         # commanding a large jump on the first tick
-        self.angle1 = 0.0
-        self.angle2 = 0.0
-        self.angle3 = 0.0
+        self.angle1 = -20.0
+        self.angle2 = -20.0
+        self.angle3 = -20.0
 
         # --- Homing state flags ---    
         self.homed1 = False
