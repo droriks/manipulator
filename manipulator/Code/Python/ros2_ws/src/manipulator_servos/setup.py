@@ -14,7 +14,7 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='dror',
-    maintainer_email='<drorks@terpmail.umd.edu>',
+    maintainer_email='drorks@terpmail.umd.edu',
     description='TODO: Package description',
     license='TODO: License declaration',
     extras_require={
@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'servo_node = manipulator_servos.servo_node:main'
         ],
     },
 )
