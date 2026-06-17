@@ -8,17 +8,30 @@ import numpy as np
 class IKNode(Node):
     def __init__(self):
         super().__init__('ik_node')
-        self.subscription = self.create_subscription(
+        self.target_sub = self.create_subscription(
             Pose,
             'target_pose',
             self.pose_callback,
             10
         )
+        self.homed = False
+        self.homing_sub = self.creatre_subscription(
+            HomingStatus,
+            'homing_status',
+            self.homing_callback,
+            10
+        )
+
         self.publisher = self.create_publisher(JointAngles, 'joint_angles', 10)
         self.get_logger().info("IK Node started")
 
+    def homing_callback(self, msg):
+        self.homed = msg.homed
 
     def pose_callback(self, msg):
+        if not self.homed:
+            self.get_logger().warn("Pose not sent -- not homed yet")
+            return
         self.get_logger().info(f"Received pose: H={msg.height}, psi={msg.psi}, theta={msg.theta}")
         alpha1, alpha2, alpha3 = self.solve_ik(msg.height, msg.psi, msg.theta)
         joint_angles = JointAngles()

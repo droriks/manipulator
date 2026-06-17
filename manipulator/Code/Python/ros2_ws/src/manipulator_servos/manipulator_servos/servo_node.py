@@ -74,7 +74,7 @@ class ServoNode(Node):
 
     def set_servo_angle(self, channel, angle):
         """Convert angle in degrees to PWM and send to servo."""
-        pulse_us = self.min_pulse + (angle + 30) / 180 * (self.max_pulse - self.min_pulse)
+        pulse_us = self.min_pulse + (angle) / 180 * (self.max_pulse - self.min_pulse)
         duty_cycle = int(pulse_us / 20000 * 65535)
         self.pca.channels[channel].duty_cycle = duty_cycle
 
