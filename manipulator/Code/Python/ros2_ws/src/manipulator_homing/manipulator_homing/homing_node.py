@@ -27,7 +27,7 @@ class HomingNode(Node):
         self.pca.frequency = 50  # standard 50Hz for servos
 
         # --- Servo channels on PCA9685 ---
-        self.channels = [0, 4, 7]  # leg1, leg2, leg3
+        self.channels = [1, 4, 7]  # leg1, leg2, leg3
 
         # --- PWM pulse range in microseconds ---
         # These define the physical limits of your servos
@@ -42,9 +42,9 @@ class HomingNode(Node):
         # --- Angle state: where we THINK each servo is ---
         # We start assuming servos are near home (-30) to avoid
         # commanding a large jump on the first tick
-        self.angle1 = 30.0
-        self.angle2 = 30.0
-        self.angle3 = 30.0
+        self.angle1 = 90.0
+        self.angle2 = 90.0
+        self.angle3 = 90.0
 
         # --- Homing state flags ---    
         self.homed1 = False
@@ -69,15 +69,15 @@ class HomingNode(Node):
         # We mark it homed immediately so the leg doesn't move at all
         if self.switch1.is_pressed:
             self.homed1 = True
-            self.angle1 = -30.0
+            self.angle1 = 90.0
             self.get_logger().warn('Switch 1 already pressed at startup — leg 1 skipped')
         if self.switch2.is_pressed:
             self.homed2 = True
-            self.angle2 = -30.0
+            self.angle2 = 90.0
             self.get_logger().warn('Switch 2 already pressed at startup — leg 2 skipped')
         if self.switch3.is_pressed:
             self.homed3 = True
-            self.angle3 = -30.0
+            self.angle3 = 90.0
             self.get_logger().warn('Switch 3 already pressed at startup — leg 3 skipped')
 
         # --- Send initial position to servos so they don't jump ---
@@ -98,13 +98,13 @@ class HomingNode(Node):
             # Decrement angle for any leg not yet homed
             # This slowly moves each servo in the negative direction
             if not self.homed1:
-                self.angle1 -= self.homing_speed
+                self.angle1 += self.homing_speed
                 self.get_logger().info(f"angle1: {self.angle1}")
             if not self.homed2:
-                self.angle2 -= self.homing_speed
+                self.angle2 += self.homing_speed
                 self.get_logger().info(f"angle2: {self.angle2}")
             if not self.homed3:
-                self.angle3 -= self.homing_speed
+                self.angle3 += self.homing_speed
                 self.get_logger().info(f"angle3: {self.angle3}")
 
             # Command the servos to the new angles
@@ -136,22 +136,22 @@ class HomingNode(Node):
         else:
             # === PHASE 2: Return all legs to 0 degrees ===
             # Increment each angle back toward 0
-            if self.angle1 < 0.0:
-                self.angle1 += self.homing_speed
-            if self.angle2 < 0.0:
-                self.angle2 += self.homing_speed
-            if self.angle3 < 0.0:
-                self.angle3 += self.homing_speed
+            if self.angle1 > 90.0:
+                self.angle1 -= self.homing_speed
+            if self.angle2 > 90.0:
+                self.angle2 -= self.homing_speed
+            if self.angle3 > 90.0:
+                self.angle3 -= self.homing_speed
 
             # Command servos to updated angles
             self._command_servos()
 
             # Once all legs are back at 0, homing is complete
-            if self.angle1 >= 0.0 and self.angle2 >= 0.0 and self.angle3 >= 0.0:
+            if self.angle1 >= 90.0 and self.angle2 >= 90.0 and self.angle3 >= 90.0:
                 # Snap exactly to 0
-                self.angle1 = 0.0
-                self.angle2 = 0.0
-                self.angle3 = 0.0
+                self.angle1 = 90.0
+                self.angle2 = 90.0
+                self.angle3 = 90.0
                 self._command_servos()
 
                 self.homing_complete = True
@@ -180,10 +180,10 @@ class HomingNode(Node):
     def set_servo_angle(self, channel, angle):
         """Convert angle in degrees to PWM and send to servo."""
         # Clamp to safe range during homing
-        angle = max(-100.0, min(130.0, angle))
+        #angle = max(-100.0, min(130.0, angle))
         # Map angle to pulse width in microseconds
         # -30° → min_pulse (500us), +150° → max_pulse (2500us)
-        pulse_us = self.max_pulse - (angle +30) / 180 * (self.max_pulse - self.min_pulse)
+        pulse_us = self.min_pulse + (angle) / 180 * (self.max_pulse - self.min_pulse)
         # Convert microseconds to 16-bit duty cycle (period = 20000us)
         duty_cycle = int(pulse_us / 20000 * 65535)
         self.pca.channels[channel].duty_cycle = duty_cycle

@@ -20,7 +20,7 @@ def set_angle(channel, angle):
 
 # --- Test ---
 angle = 90.0
-channel = 1  # change to whichever channel you're testing
+channel = 4  # change to whichever channel you're testing
 
 print("Starting — driving down until switch hit")
 
