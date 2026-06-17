@@ -42,9 +42,9 @@ class HomingNode(Node):
         # --- Angle state: where we THINK each servo is ---
         # We start assuming servos are near home (-30) to avoid
         # commanding a large jump on the first tick
-        self.angle1 = 90.0
-        self.angle2 = 90.0
-        self.angle3 = 90.0
+        self.angle1 = 0.0
+        self.angle2 = 0.0
+        self.angle3 = 0.0
 
         # --- Homing state flags ---    
         self.homed1 = False
@@ -69,15 +69,15 @@ class HomingNode(Node):
         # We mark it homed immediately so the leg doesn't move at all
         if self.switch1.is_pressed:
             self.homed1 = True
-            self.angle1 = 90.0
+            #self.angle1 = 90.0
             self.get_logger().warn('Switch 1 already pressed at startup — leg 1 skipped')
         if self.switch2.is_pressed:
             self.homed2 = True
-            self.angle2 = 90.0
+            #self.angle2 = 90.0
             self.get_logger().warn('Switch 2 already pressed at startup — leg 2 skipped')
         if self.switch3.is_pressed:
             self.homed3 = True
-            self.angle3 = 90.0
+            #self.angle3 = 90.0
             self.get_logger().warn('Switch 3 already pressed at startup — leg 3 skipped')
 
         # --- Send initial position to servos so they don't jump ---
