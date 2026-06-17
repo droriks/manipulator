@@ -105,6 +105,7 @@ class HomingNode(Node):
                 self.get_logger().info(f"angle3: {self.angle3}")
 
             # Command the servos to the new angles
+            
             self._command_servos()
 
             # Check if any switch just got pressed
