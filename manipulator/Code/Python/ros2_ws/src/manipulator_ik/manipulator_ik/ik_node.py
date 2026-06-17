@@ -33,7 +33,13 @@ class IKNode(Node):
             self.get_logger().warn("Pose not sent -- not homed yet")
             return
         self.get_logger().info(f"Received pose: H={msg.height}, psi={msg.psi}, theta={msg.theta}")
+        
+        import time
+        t0 = time.time()
         alpha1, alpha2, alpha3 = self.solve_ik(msg.height, msg.psi, msg.theta)
+        self.get_logger().info(f"solve_ik took {time.time() - t0:.3f}s")
+        
+        #alpha1, alpha2, alpha3 = self.solve_ik(msg.height, msg.psi, msg.theta)
         joint_angles = JointAngles()
         joint_angles.alpha1 = alpha1
         joint_angles.alpha2 = alpha2
