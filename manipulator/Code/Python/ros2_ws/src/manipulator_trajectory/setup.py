@@ -25,7 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'sine_wave_node = manipulator_trajectory.sine_wave_node:main',
-            'playback_node = mainpulator_trajectory.playback_node:main'
+            'playback_node = manipulator_trajectory.playback_node:main'
         ],
     },
 )
