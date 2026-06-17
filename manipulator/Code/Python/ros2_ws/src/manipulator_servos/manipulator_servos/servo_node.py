@@ -15,7 +15,7 @@ class ServoNode(Node):
         self.pca.frequency = 50
 
         # --- Servo channels on PCA9685 ---
-        self.channels = [0, 4, 7]  # leg1, leg2, leg3
+        self.channels = [1, 4, 7]  # leg1, leg2, leg3
 
         # --- PWM pulse range in microseconds ---
         self.min_pulse = 500
@@ -68,14 +68,13 @@ class ServoNode(Node):
             return
 
         # Subtract offset so IK angles map correctly to physical positions
-        self.set_servo_angle(self.channels[0], msg.alpha1 - self.offsets[0])
-        self.set_servo_angle(self.channels[1], msg.alpha2 - self.offsets[1])
-        self.set_servo_angle(self.channels[2], msg.alpha3 - self.offsets[2])
+        self.set_servo_angle(self.channels[0], self.offsets[0] - msg.alpha1)
+        self.set_servo_angle(self.channels[1], self.offsets[1] - msg.alpha2)
+        self.set_servo_angle(self.channels[2], self.offsets[2] - msg.alpha3)
 
     def set_servo_angle(self, channel, angle):
         """Convert angle in degrees to PWM and send to servo."""
-        angle = max(-30.0, min(150.0, angle))
-        pulse_us = self.max_pulse - (angle + 30) / 180 * (self.max_pulse - self.min_pulse)
+        pulse_us = self.min_pulse + (angle + 30) / 180 * (self.max_pulse - self.min_pulse)
         duty_cycle = int(pulse_us / 20000 * 65535)
         self.pca.channels[channel].duty_cycle = duty_cycle
 
