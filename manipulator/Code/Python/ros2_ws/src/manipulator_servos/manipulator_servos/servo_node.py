@@ -68,9 +68,9 @@ class ServoNode(Node):
             return
 
         # Subtract offset so IK angles map correctly to physical positions
-        self.set_servo_angle(self.channels[0], self.offsets[0] - msg.alpha1)
-        self.set_servo_angle(self.channels[1], self.offsets[1] - msg.alpha2)
-        self.set_servo_angle(self.channels[2], self.offsets[2] - msg.alpha3)
+        self.set_servo_angle(self.channels[0], self.offsets[0] - msg.alpha1 - 35)
+        self.set_servo_angle(self.channels[1], self.offsets[1] - msg.alpha2 - 35)
+        self.set_servo_angle(self.channels[2], self.offsets[2] - msg.alpha3 - 35)
 
     def set_servo_angle(self, channel, angle):
         """Convert angle in degrees to PWM and send to servo."""
