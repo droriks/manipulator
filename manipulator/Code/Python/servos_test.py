@@ -9,7 +9,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 pca = PCA9685(i2c)
 pca.frequency = 50
 
-switch = Button(17, pull_up=True)
+switch = Button(27, pull_up=True)
 
 def angle_to_duty(angle):
     pulse_us = 500 + (angle) / 180 * (2500 - 500)
@@ -19,7 +19,7 @@ def set_angle(channel, angle):
     pca.channels[channel].duty_cycle = angle_to_duty(angle)
 
 # --- Test ---
-angle = 90.0
+angle = 0.0
 channel = 4  # change to whichever channel you're testing
 
 print("Starting — driving down until switch hit")
