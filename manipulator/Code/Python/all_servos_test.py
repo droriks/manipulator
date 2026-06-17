@@ -19,7 +19,8 @@ def angle_to_duty(angle):
 def set_angle(channel, angle):
     pca.channels[channel].duty_cycle = angle_to_duty(angle)
 
-def angle_to_servo(alpha, offset):
+def angle_to_servo(alpha, beta):
+    offset = beta - 35
     return servo_angle = offset - alpha #where offset = beta-phi
 
 # --- Test ---
@@ -43,11 +44,10 @@ try:
         print(f"Angles: {[f'{a:.1f}' for a in angles]}")
         sleep(0.05)
 
-    print("All legs homed — returning 30 degrees up")
+    print("All legs homed — returning 30 (maybe) degrees up")
 
     for i in range(3):
-        offset[i] = hit_angle[i] - 30
-        target[i] = angle_to_servo(45, offset[i])
+        target[i] = angle_to_servo(55, hit_angle[i])
 
     while any(angles[i] > targets[i] for i in range(3)):
         for i in range(3):
