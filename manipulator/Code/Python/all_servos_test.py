@@ -21,7 +21,8 @@ def set_angle(channel, angle):
 
 def angle_to_servo(alpha, beta):
     offset = beta - 35
-    return servo_angle = offset - alpha #where offset = beta-phi
+    servo_angle = offset - alpha #where offset = beta-phi
+    return servo_angle 
 
 # --- Test ---
 angles = [0.0, 0.0, 0.0]
