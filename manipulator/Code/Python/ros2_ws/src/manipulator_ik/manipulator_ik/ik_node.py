@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from manipulator_interfaces.msg import Pose, JointAngles
+from manipulator_interfaces.msg import Pose, JointAngles, HomingStatus
 from sympy import cos, sin, pi, nsolve, Matrix, symbols
 import numpy as np
 
@@ -8,14 +8,14 @@ import numpy as np
 class IKNode(Node):
     def __init__(self):
         super().__init__('ik_node')
+        self.homed = False
         self.target_sub = self.create_subscription(
             Pose,
             'target_pose',
             self.pose_callback,
             10
         )
-        self.homed = False
-        self.homing_sub = self.creatre_subscription(
+        self.homing_sub = self.create_subscription(
             HomingStatus,
             'homing_status',
             self.homing_callback,
