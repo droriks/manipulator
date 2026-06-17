@@ -133,12 +133,12 @@ class HomingNode(Node):
         else:
             # === PHASE 2: Return all legs to 0 degrees ===
             # Increment each angle back toward 0
-            if self.angle1 > (self.angle1_offset - 0.0):
+            if self.angle1 < (self.angle1_offset - 0.0):
                 self.angle1 -= self.homing_speed
                 self.get_logger().info(f"angle1: {self.angle1}")
-            if self.angle2 > (self.angle2_offset - 0.0):
+            if self.angle2 < (self.angle2_offset - 0.0):
                 self.angle2 -= self.homing_speed
-            if self.angle3 > (self.angle3_offset - 0.0):
+            if self.angle3 < (self.angle3_offset - 0.0):
                 self.angle3 -= self.homing_speed
 
             # Command servos to updated angles
