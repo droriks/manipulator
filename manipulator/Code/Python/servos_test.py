@@ -12,7 +12,7 @@ pca.frequency = 50
 switch = Button(17, pull_up=True)
 
 def angle_to_duty(angle):
-    pulse_us = 2500 - (angle + 30) / 180 * (2500 - 500)
+    pulse_us = 2500 - (angle + 90) / 180 * (2500 - 500)
     return int(pulse_us / 20000 * 65535)
 
 def set_angle(channel, angle):
