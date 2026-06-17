@@ -47,6 +47,7 @@ try:
 
     print("All legs homed — returning 30 (maybe) degrees up")
 
+    target = []
     for i in range(3):
         target[i] = angle_to_servo(55, hit_angle[i])
 
