@@ -135,6 +135,7 @@ class HomingNode(Node):
             # Increment each angle back toward 0
             if self.angle1 > (self.angle1_offset - 0.0):
                 self.angle1 -= self.homing_speed
+                self.get_logger().info(f"angle1: {self.angle1}")
             if self.angle2 > (self.angle2_offset - 0.0):
                 self.angle2 -= self.homing_speed
             if self.angle3 > (self.angle3_offset - 0.0):
