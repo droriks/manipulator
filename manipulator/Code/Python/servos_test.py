@@ -22,9 +22,6 @@ def set_angle(channel, angle):
 angle = 90.0
 channel = 1  # change to whichever channel you're testing
 
-set_angle(channel, angle)
-sleep(3)
-
 print("Starting — driving down until switch hit")
 
 try:
@@ -36,9 +33,9 @@ try:
 
     print(f"Switch hit at {angle:.1f} degrees — returning 30 degrees up")
     
-    target = angle + 30.0
-    while angle < target:
-        angle += 0.5
+    target = angle - 30.0
+    while angle > target:
+        angle -= 0.5
         print(f"Returning: {angle:.1f}")
         set_angle(channel, angle)
         sleep(0.05)
