@@ -112,17 +112,17 @@ class HomingNode(Node):
             # We do NOT snap the angle to -30 — we just stop and remember the offset
             if not self.homed1 and self.switch1.is_pressed:
                 self.homed1 = True
-                self.angle1_offset = self.angle1 - 30.0
+                self.angle1_offset = self.angle1 - 40.0
                 self.get_logger().info(f'Leg 1 homed at {self.angle1:.1f}° (offset={self.angle1_offset:.1f})')
 
             if not self.homed2 and self.switch2.is_pressed:
                 self.homed2 = True
-                self.angle2_offset = self.angle2 - 30.0
+                self.angle2_offset = self.angle2 - 40.0
                 self.get_logger().info(f'Leg 2 homed at {self.angle2:.1f}° (offset={self.angle2_offset:.1f})')
 
             if not self.homed3 and self.switch3.is_pressed:
                 self.homed3 = True
-                self.angle3_offset = self.angle3 - 30.0
+                self.angle3_offset = self.angle3 - 40.0
                 self.get_logger().info(f'Leg 3 homed at {self.angle3:.1f}° (offset={self.angle3_offset:.1f})')
 
             # Once all three are homed, start returning to 0
