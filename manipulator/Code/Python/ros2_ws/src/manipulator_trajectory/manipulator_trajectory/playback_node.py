@@ -39,7 +39,7 @@ class PlaybackNode(Node):
         self.index = 0
 
         #timer
-        self.timer = self.create_timer(0.05, self.timer_callback)
+        self.timer = self.create_timer(0.01, self.timer_callback)
         self.get_logger().info("Playback started")
 
     def timer_callback(self):
