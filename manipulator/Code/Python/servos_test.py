@@ -20,7 +20,7 @@ def set_angle(channel, angle):
 
 # --- Test ---
 angle = 90.0
-channel = 0  # change to whichever channel you're testing
+channel = 1  # change to whichever channel you're testing
 
 set_angle(channel, angle)
 sleep(3)
