@@ -51,9 +51,9 @@ try:
     for i in range(3):
         target[i] = angle_to_servo(55, hit_angle[i])
 
-    while any(angles[i] > targets[i] for i in range(3)):
+    while any(angles[i] > target[i] for i in range(3)):
         for i in range(3):
-            if angles[i] > targets[i]:
+            if angles[i] > target[i]:
                 angles[i] -= 0.5
                 set_angle(channels[i], angles[i])
         print(f"Returning: {[f'{a:.1f}' for a in angles]}")
