@@ -27,7 +27,7 @@ class SineWaveMotion(Node):
         self.theta_center = self.get_parameter('theta_center').value
         self.theta_amplitude = self.get_parameter('theta_amplitude').value
         self.period = self.get_parameter('period').value
-        self.get_parameter('publish_rate').value
+        self.publish_rate = self.get_parameter('publish_rate').value
 
         #publisher
         self.pose_pub = self.create_publisher(Pose, 'target_pose', 10)
