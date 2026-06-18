@@ -189,13 +189,16 @@ def solve_ik(h, psi, theta):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--height_center', type=float, default=107.5)
-    parser.add_argument('--height_amplitude', type=float, default=0)
-    parser.add_argument('--psi_center', type=float, default=0)
+    parser.add_argument('--height_amplitude', type=float, default=0.0)
+    parser.add_argument('--height_offset', type=float, default=0.0)
+    parser.add_argument('--psi_center', type=float, default=0.0)
     parser.add_argument('--psi_amplitude', type=float, default=0.0)
+    parser.add_argument('--psi_offset', type=float, default=0.0)
     parser.add_argument('--theta_center', type=float, default=0.0)
     parser.add_argument('--theta_amplitude', type=float, default=0.0)
+    parser.add_argument('--theta_offset', type=float, default=0.0)
     parser.add_argument('--period', type=float, default=2.0)
-    parser.add_argument('--dt', type=float, default=0.05)
+    parser.add_argument('--dt', type=float, default=0.01)
     parser.add_argument('--output', type=str, default='data/sine_table.csv')
     args = parser.parse_args()
 
@@ -214,9 +217,9 @@ def main():
         t = i*args.dt
         phase = 2*math.pi*t/args.period
 
-        height = args.height_center + args.height_amplitude*math.sin(phase)
-        psi = args.psi_center + args.psi_amplitude*math.sin(phase)
-        theta = args.theta_center + args.theta_amplitude*math.sin(phase)
+        height = args.height_center + args.height_amplitude*math.sin(phase + args.height_offset)
+        psi = args.psi_center + args.psi_amplitude*math.sin(phase + args.psi_offset)
+        theta = args.theta_center + args.theta_amplitude*math.sin(phase + args.theta_offset)
 
         alpha1, alpha2, alpha3 = solve_ik(height, psi, theta)
         rows.append([phase, height, psi, theta, alpha1, alpha2, alpha3])
