@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from manipulator_interfaces.msg import Pose
+from manipulator_interfaces.msg import Pose, HomingStatus
 import math
 import time
 
@@ -17,7 +17,7 @@ class SineWaveMotion(Node):
         self.declare_parameter('theta_center', 0.0)
         self.declare_parameter('theta_amplitude', 0.0)
         self.declare_parameter('period', 2.0)
-        self.declare_parameter('publish_rate', .05)
+        self.declare_parameter('publish_rate', .009)
 
         #read parameter values into local variables
         self.height_center = self.get_parameter('height_center').value
@@ -28,6 +28,16 @@ class SineWaveMotion(Node):
         self.theta_amplitude = self.get_parameter('theta_amplitude').value
         self.period = self.get_parameter('period').value
         self.publish_rate = self.get_parameter('publish_rate').value
+
+        #subscriber for starting
+        self.homed = False
+        self.homing_sub = self.create_subscription(
+            HomingStatus,
+            'homing_status',
+            self.homing_callback,
+            10
+        )
+
 
         #publisher
         self.pose_pub = self.create_publisher(Pose, 'target_pose', 10)
@@ -45,7 +55,15 @@ class SineWaveMotion(Node):
             f'theta = {self.theta_center} +- {self.theta_amplitude}'
         )
 
+    def homing_callback(self, msg):
+        if msg.homed and not self.homed:
+            self.start_time = time.time()
+        self.homed = msg.homed
+
     def timer_callback(self):
+        if not self.homed:
+            return
+    
         elapsed_time = time.time() - self.start_time
         phase = 2 * math.pi * elapsed_time / self.period
 
