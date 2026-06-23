@@ -12,20 +12,26 @@ class SineWaveMotion(Node):
         #parameters
         self.declare_parameter('height_center', 107.5)
         self.declare_parameter('height_amplitude', 0.0)
+        self.declare_parameter('height_offset', 0.0)
         self.declare_parameter('psi_center', 0.0)
         self.declare_parameter('psi_amplitude', 0.0)
+        self.declare_parameter('psi_offset', 0.0)
         self.declare_parameter('theta_center', 0.0)
         self.declare_parameter('theta_amplitude', 0.0)
+        self.declare_parameter('theta_offset', 0.0)
         self.declare_parameter('period', 2.0)
         self.declare_parameter('publish_rate', .009)
 
         #read parameter values into local variables
         self.height_center = self.get_parameter('height_center').value
         self.height_amplitude = self.get_parameter('height_amplitude').value
+        self.height_offset = self.get_parameter('height_offset').value
         self.psi_center = self.get_parameter('psi_center').value
         self.psi_amplitude = self.get_parameter('psi_amplitude').value
+        self.psi_offset = self.get_parameter('psi_offset').value
         self.theta_center = self.get_parameter('theta_center').value
         self.theta_amplitude = self.get_parameter('theta_amplitude').value
+        self.theta_offset = self.get_parameter('theta_offset').value
         self.period = self.get_parameter('period').value
         self.publish_rate = self.get_parameter('publish_rate').value
 
@@ -67,9 +73,9 @@ class SineWaveMotion(Node):
         elapsed_time = time.time() - self.start_time
         phase = 2 * math.pi * elapsed_time / self.period
 
-        height = self.height_center + self.height_amplitude * math.sin(phase)
-        psi = self.psi_center + self.psi_amplitude * math.sin(phase)
-        theta = self.theta_center + self.theta_amplitude * math.sin(phase)
+        height = self.height_center + self.height_amplitude * math.sin(phase + self.height_offset)
+        psi = self.psi_center + self.psi_amplitude * math.sin(phase + self.psi_offset)
+        theta = self.theta_center + self.theta_amplitude * math.sin(phase + self.theta_offset)
 
         msg = Pose()
         msg.height = height
