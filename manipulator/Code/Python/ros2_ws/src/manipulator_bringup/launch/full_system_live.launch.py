@@ -48,7 +48,7 @@ def generate_launch_description():
             'theta_amplitude' : LaunchConfiguration('theta_amplitude'),
             'theta_offset' : LaunchConfiguration('theta_offset'),
             'roll_center' : LaunchConfiguration('roll_center'),
-            'roll_amlitude' : LaunchConfiguration('roll_amplitude'),
+            'roll_amplitude' : LaunchConfiguration('roll_amplitude'),
             'roll_offset' : LaunchConfiguration('roll_offset'),
             'period' : LaunchConfiguration('period'),
             'publish_rate' : LaunchConfiguration('publish_rate')

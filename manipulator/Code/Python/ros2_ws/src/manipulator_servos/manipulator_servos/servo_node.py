@@ -15,7 +15,7 @@ class ServoNode(Node):
         self.pca.frequency = 50
 
         # --- Servo channels on PCA9685 ---
-        self.channels = [1, 4, 7, 6]  # leg1, leg2, leg3, leg4
+        self.channels = [1, 4, 7, 2]  # leg1, leg2, leg3, leg4
 
         # --- PWM pulse range in microseconds ---
         self.min_pulse = 500
