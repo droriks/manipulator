@@ -228,7 +228,7 @@ class IKNode(Node):
         joint_angles.alpha3 = alpha3
         joint_angles.roll = msg.roll
         self.publisher.publish(joint_angles)
-        self.get_logger().info(f"Publishing angles: {joint_angles.alpha1}, {joint_angles.alpha2}, {joint_angles.alpha3}")
+        self.get_logger().info(f"Publishing angles: {joint_angles.alpha1}, {joint_angles.alpha2}, {joint_angles.alpha3}, {joint_angles.roll}")
 
     def solve_ik_fast(self, h, psi_deg, theta_deg):
             import time
