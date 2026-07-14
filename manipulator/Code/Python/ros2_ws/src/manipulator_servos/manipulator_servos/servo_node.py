@@ -15,7 +15,7 @@ class ServoNode(Node):
         self.pca.frequency = 50
 
         # --- Servo channels on PCA9685 ---
-        self.channels = [1, 4, 7]  # leg1, leg2, leg3
+        self.channels = [1, 4, 7, 8]  # leg1, leg2, leg3, leg4
 
         # --- PWM pulse range in microseconds ---
         self.min_pulse = 500
@@ -71,6 +71,7 @@ class ServoNode(Node):
         self.set_servo_angle(self.channels[0], self.offsets[0] - msg.alpha1)
         self.set_servo_angle(self.channels[1], self.offsets[1] - msg.alpha2)
         self.set_servo_angle(self.channels[2], self.offsets[2] - msg.alpha3)
+        self.set_servo_angle(self.channels[3], msg.roll)
 
     def set_servo_angle(self, channel, angle):
         """Convert angle in degrees to PWM and send to servo."""

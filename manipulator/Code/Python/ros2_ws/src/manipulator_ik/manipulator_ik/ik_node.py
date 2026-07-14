@@ -226,6 +226,7 @@ class IKNode(Node):
         joint_angles.alpha1 = alpha1
         joint_angles.alpha2 = alpha2
         joint_angles.alpha3 = alpha3
+        joint_angles.roll = msg.roll
         self.publisher.publish(joint_angles)
         self.get_logger().info(f"Publishing angles: {joint_angles.alpha1}, {joint_angles.alpha2}, {joint_angles.alpha3}")
 

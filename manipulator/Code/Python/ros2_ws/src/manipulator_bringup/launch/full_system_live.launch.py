@@ -13,6 +13,9 @@ def generate_launch_description():
     theta_center_arg = DeclareLaunchArgument('theta_center', default_value='0.0')
     theta_amplitude_arg = DeclareLaunchArgument('theta_amplitude', default_value='0.0')
     theta_offset_arg = DeclareLaunchArgument('theta_offset', default_value='0.0')
+    roll_center_arg = DeclareLaunchArgument('roll_center', default_value='90.0')
+    roll_amplitude_arg = DeclareLaunchArgument('roll_amplitude', default_value='0.0')
+    roll_offset_arg = DeclareLaunchArgument('roll_offset', default_value='0.0')
     period_arg = DeclareLaunchArgument('period', default_value='2.0')
     publish_rate_arg = DeclareLaunchArgument('publish_rate', default_value='.009')
     
@@ -44,6 +47,9 @@ def generate_launch_description():
             'theta_center' : LaunchConfiguration('theta_center'),
             'theta_amplitude' : LaunchConfiguration('theta_amplitude'),
             'theta_offset' : LaunchConfiguration('theta_offset'),
+            'roll_center' : LaunchConfiguration('roll_center'),
+            'roll_amlitude' : LaunchConfiguration('roll_amplitude'),
+            'roll_offset' : LaunchConfiguration('roll_offset'),
             'period' : LaunchConfiguration('period'),
             'publish_rate' : LaunchConfiguration('publish_rate')
             
@@ -60,6 +66,9 @@ def generate_launch_description():
         theta_center_arg,
         theta_amplitude_arg,
         theta_offset_arg,
+        roll_center_arg,
+        roll_amplitude_arg,
+        roll_offset_arg,
         period_arg,
         publish_rate_arg,
         homing_node,

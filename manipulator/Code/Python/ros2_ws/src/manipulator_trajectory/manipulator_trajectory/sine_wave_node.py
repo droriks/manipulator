@@ -12,13 +12,16 @@ class SineWaveMotion(Node):
         #parameters
         self.declare_parameter('height_center', 107.5)
         self.declare_parameter('height_amplitude', 0.0)
-        self.declare_parameter('height_offset', 0.0)
+        self.declare_parameter('height_offset', 0.0)   #meaning time offset -- for out of phase motions
         self.declare_parameter('psi_center', 0.0)
         self.declare_parameter('psi_amplitude', 0.0)
         self.declare_parameter('psi_offset', 0.0)
         self.declare_parameter('theta_center', 0.0)
         self.declare_parameter('theta_amplitude', 0.0)
         self.declare_parameter('theta_offset', 0.0)
+        self.declare_parameter('roll_center', 90.0)
+        self.declare_parameter('roll_amplitude', 0.0)
+        self.declare_parameter('roll_offset', 0.0)
         self.declare_parameter('period', 2.0)
         self.declare_parameter('publish_rate', .009)
 
@@ -32,6 +35,9 @@ class SineWaveMotion(Node):
         self.theta_center = self.get_parameter('theta_center').value
         self.theta_amplitude = self.get_parameter('theta_amplitude').value
         self.theta_offset = self.get_parameter('theta_offset').value
+        self.roll_center = self.get_parameter('roll_center').value
+        self.roll_amplitude = self.get_parameter('roll_amplitude').value
+        self.roll_offset = self.get_parameter('roll_offset').value
         self.period = self.get_parameter('period').value
         self.publish_rate = self.get_parameter('publish_rate').value
 
@@ -59,6 +65,7 @@ class SineWaveMotion(Node):
             f'height = {self.height_center} +- {self.height_amplitude}, '
             f'psi = {self.psi_center} +- {self.psi_amplitude}, '
             f'theta = {self.theta_center} +- {self.theta_amplitude}'
+            f'roll = {self.roll_center} +- {self.roll_amplitude}'
         )
 
     def homing_callback(self, msg):
@@ -76,11 +83,13 @@ class SineWaveMotion(Node):
         height = self.height_center + self.height_amplitude * math.sin(phase + self.height_offset)
         psi = self.psi_center + self.psi_amplitude * math.sin(phase + self.psi_offset)
         theta = self.theta_center + self.theta_amplitude * math.sin(phase + self.theta_offset)
+        roll = self.roll_center + self.roll_amplitude * math.sin(phase + self.roll_offset)
 
         msg = Pose()
         msg.height = height
         msg.psi = psi
         msg.theta = theta
+        msg.roll = roll
         self.pose_pub.publish(msg)
 
 def main(args=None):
